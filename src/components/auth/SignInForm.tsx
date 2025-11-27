@@ -191,7 +191,7 @@ export default function SignInForm() {
       <h1 className="mb-2.5 text-3xl font-black text-dark dark:text-white sm:text-4xl">
         Sign In
       </h1>
-      <p className="mb-7.5 font-medium">
+      <p className="mb-7.5 font-medium dark:text-white/80 text-dark/80">
         Enter your credentials to access your account
       </p>
 
@@ -247,13 +247,13 @@ export default function SignInForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-primary p-3.5 font-medium text-white transition hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-primary p-3.5 font-medium text-white transition hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 dark:text-white dark:hover:bg-opacity-90"
           >
             {isLoading ? 'Signing in...' : 'Sign In'}
           </button>
         </div>
 
-        <p className="text-center font-medium">
+        <p className="text-center font-medium dark:text-white/80 text-dark/80">
           Don't have an account?{' '}
           <Link href="/signup" className="text-primary hover:underline">
             Sign up

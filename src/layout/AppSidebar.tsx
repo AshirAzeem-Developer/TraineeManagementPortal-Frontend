@@ -10,6 +10,8 @@ import CalendarIcon from '@/icons/calendar.svg';
 import GroupIcon from '@/icons/group.svg';
 import TaskIcon from '@/icons/task.svg';
 import CloseIcon from '@/icons/close.svg';
+import UserIcon from '@/icons/user-line.svg';
+import TimeIcon from '@/icons/time.svg';
 
 interface MenuItem {
   label: string;
@@ -24,6 +26,18 @@ const menuItems: MenuItem[] = [
     route: '/',
     icon: GridIcon,
     roles: ['admin', 'trainer', 'trainee'],
+  },
+  {
+    label: 'Profile',
+    route: '/profile',
+    icon: UserIcon,
+    roles: ['admin', 'trainer', 'trainee'],
+  },
+  {
+    label: 'Attendance',
+    route: '/attendance',
+    icon: TimeIcon,
+    roles: ['trainee'],
   },
   {
     label: 'Batches',
@@ -48,12 +62,6 @@ const menuItems: MenuItem[] = [
     route: '/my-progress',
     icon: TaskIcon,
     roles: ['trainee'],
-  },
-  {
-    label: 'Profile',
-    route: '/profile',
-    icon: GroupIcon,
-    roles: ['admin', 'trainer', 'trainee'],
   },
 ];
 
