@@ -9,6 +9,7 @@ interface TextareaProps {
   disabled?: boolean; // Disabled state
   error?: boolean; // Error state
   hint?: string; // Hint text to display
+  label?: string; // Label text
 }
 
 const TextArea: React.FC<TextareaProps> = ({
@@ -20,6 +21,7 @@ const TextArea: React.FC<TextareaProps> = ({
   disabled = false, // Disabled state
   error = false, // Error state
   hint = "", // Default hint text
+  label = "", // Default label text
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (onChange) {
@@ -39,6 +41,17 @@ const TextArea: React.FC<TextareaProps> = ({
 
   return (
     <div className="relative">
+      {label && (
+        <label
+          className={`mb-2 block text-sm font-medium ${
+            disabled
+              ? "text-gray-400 dark:text-gray-600"
+              : "text-gray-700 dark:text-gray-300"
+          }`}
+        >
+          {label}
+        </label>
+      )}
       <textarea
         placeholder={placeholder}
         rows={rows}

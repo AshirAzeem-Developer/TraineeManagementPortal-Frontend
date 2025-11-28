@@ -27,8 +27,9 @@ const menuItems: MenuItem[] = [
   { label: 'Attendance', route: '/attendance', icon: TimeIcon, roles: ['trainee'] },
   { label: 'Batches', route: '/batches', icon: CalendarIcon, roles: ['admin', 'trainer'] },
   { label: 'Trainees', route: '/trainees', icon: GroupIcon, roles: ['admin', 'trainer'] },
-  { label: 'Curriculum', route: '/curriculum', icon: TaskIcon, roles: ['admin', 'trainer'] },
+  { label: 'Curriculum', route: '/curriculum', icon: TaskIcon, roles: ['admin', 'trainer', 'trainee'] },
   { label: 'My Progress', route: '/my-progress', icon: TaskIcon, roles: ['trainee'] },
+  {label: 'Assignments', route: '/assignments',icon: TaskIcon,roles: ['admin', 'trainer', 'trainee'],},
 ];
 
 export default function AppSidebar() {
