@@ -151,3 +151,58 @@ export interface Submission {
   created_at: string;
   updated_at: string;
 }
+
+export interface Rubric {
+  id: number;
+  assignment_id: number;
+  name: string;
+  description: string | null;
+  criteria: string[] | null;
+  max_points: number;
+  weight: number;
+  order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RubricScore {
+  score: number;
+  feedback: string;
+}
+
+export interface Evaluation {
+  id: number;
+  submission_id: number;
+  evaluation_type: 'ai' | 'manual' | 'hybrid';
+  ai_raw_response: string | null;
+  rubric_scores: Record<string, RubricScore> | null;
+  total_score: number | null;
+  max_possible_score: number | null;
+  percentage: number | null;
+  overall_feedback: string | null;
+  strengths: string[] | null;
+  improvements: string[] | null;
+  trainer_reviewed: boolean;
+  reviewed_by: number | null;
+  reviewed_at: string | null;
+  reviewer?: User;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TraineeProgress {
+  id: number;
+  user_id: number;
+  week_id: number | null;
+  day_id: number | null;
+  assignments_completed: number;
+  assignments_total: number;
+  average_score: number;
+  total_points_earned: number;
+  total_points_possible: number;
+  category_scores: Record<string, number> | null;
+  week?: Week;
+  day?: Day;
+  created_at: string;
+  updated_at: string;
+}

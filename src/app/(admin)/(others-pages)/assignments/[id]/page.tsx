@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
@@ -9,6 +9,8 @@ import PageBreadCrumb from '@/components/common/PageBreadCrumb';
 import TextArea from '@/components/form/input/TextArea';
 import InputField from '@/components/form/input/InputField';
 import { format } from 'date-fns';
+import evaluationService from '@/lib/api/evaluation.service';
+import { Evaluation } from '@/types';
 
 export default function AssignmentDetailPage() {
   const params = useParams();
@@ -16,6 +18,10 @@ export default function AssignmentDetailPage() {
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const assignmentId = parseInt(params.id as string);
+
+
+  const [evaluation, setEvaluation] = useState<Evaluation | null>(null);
+const [evaluating, setEvaluating] = useState(false);
 
   const [submissionData, setSubmissionData] = useState({
     code_submission: '',
@@ -71,7 +77,28 @@ export default function AssignmentDetailPage() {
   }
 
   const submission = assignment.my_submission;
+// Fetch evaluation when submission exists
+useEffect(() => {
+  if (submission) {
+    evaluationService.getEvaluation(submission.id).then(setEvaluation);
+  }
+}, [submission]);
 
+// Trigger AI evaluation
+const handleTriggerEvaluation = async () => {
+  if (!submission) return;
+
+  setEvaluating(true);
+  try {
+    const evaluation = await evaluationService.triggerEvaluation(submission.id);
+    setEvaluation(evaluation);
+    alert('AI Evaluation completed!');
+  } catch (error: any) {
+    alert(error.response?.data?.message || 'Evaluation failed');
+  } finally {
+    setEvaluating(false);
+  }
+};
   return (
     <div>
       <PageBreadCrumb pageTitle={assignment.title} />
@@ -285,6 +312,105 @@ export default function AssignmentDetailPage() {
             </div>
           )}
         </div>
+        {/* AI Evaluation Results */}
+{submission && evaluation && user?.role === 'trainee' && (
+  <div className="mt-6 rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-dark-3 dark:bg-gray-dark">
+    <h3 className="mb-4 text-xl font-semibold text-dark dark:text-white">
+      AI Evaluation
+    </h3>
+
+    {/* Overall Score */}
+    <div className="mb-6 rounded-lg bg-primary/10 p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-dark-5 dark:text-dark-6">Total Score</p>
+          <p className="text-3xl font-bold text-primary">
+            {evaluation.total_score}/{evaluation.max_possible_score}
+          </p>
+        </div>
+        <div className="text-right">
+          <p className="text-sm text-dark-5 dark:text-dark-6">Percentage</p>
+          <p className="text-3xl font-bold text-primary">{evaluation.percentage}%</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Overall Feedback */}
+    {evaluation.overall_feedback && (
+      <div className="mb-4">
+        <p className="mb-2 font-medium text-dark dark:text-white">Overall Feedback</p>
+        <p className="whitespace-pre-wrap text-sm text-dark-5 dark:text-dark-6">
+          {evaluation.overall_feedback}
+        </p>
+      </div>
+    )}
+
+    {/* Strengths */}
+    {evaluation.strengths && evaluation.strengths.length > 0 && (
+      <div className="mb-4">
+        <p className="mb-2 font-medium text-green-600 dark:text-green-400">Strengths</p>
+        <ul className="list-disc space-y-1 pl-5 text-sm text-dark-5 dark:text-dark-6">
+          {evaluation.strengths.map((strength, idx) => (
+            <li key={idx}>{strength}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {/* Improvements */}
+    {evaluation.improvements && evaluation.improvements.length > 0 && (
+      <div className="mb-4">
+        <p className="mb-2 font-medium text-yellow-600 dark:text-yellow-400">
+          Areas for Improvement
+        </p>
+        <ul className="list-disc space-y-1 pl-5 text-sm text-dark-5 dark:text-dark-6">
+          {evaluation.improvements.map((improvement, idx) => (
+            <li key={idx}>{improvement}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {/* Rubric Scores Breakdown */}
+    {evaluation.rubric_scores && (
+      <div className="mt-6">
+        <p className="mb-3 font-medium text-dark dark:text-white">Detailed Scores</p>
+        <div className="space-y-3">
+          {Object.entries(evaluation.rubric_scores).map(([rubricName, data]) => (
+            <div key={rubricName} className="rounded-lg border border-stroke p-3 dark:border-dark-3">
+              <div className="mb-1 flex items-center justify-between">
+                <p className="font-medium text-dark dark:text-white">{rubricName}</p>
+                <p className="font-bold text-primary">{data.score}</p>
+              </div>
+              <p className="text-sm text-dark-5 dark:text-dark-6">{data.feedback}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {evaluation.trainer_reviewed && (
+      <div className="mt-4 rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
+        <p className="text-sm text-blue-800 dark:text-blue-300">
+          ✓ Reviewed by trainer
+        </p>
+      </div>
+    )}
+  </div>
+)}
+
+{/* Trigger Evaluation Button (Trainer) */}
+{user?.role !== 'trainee' && submission && !evaluation && (
+  <div className="mt-6">
+    <button
+      onClick={handleTriggerEvaluation}
+      disabled={evaluating}
+      className="w-full rounded-lg bg-purple-500 px-6 py-3 font-medium text-white hover:bg-purple-600 disabled:opacity-50"
+    >
+      {evaluating ? 'Evaluating with AI...' : 'Trigger AI Evaluation'}
+    </button>
+  </div>
+)}
       </div>
     </div>
   );

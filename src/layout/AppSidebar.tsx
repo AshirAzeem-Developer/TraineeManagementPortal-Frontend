@@ -24,13 +24,14 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { label: 'Dashboard', route: '/', icon: GridIcon, roles: ['admin', 'trainer', 'trainee'] },
   { label: 'Profile', route: '/profile', icon: UserIcon, roles: ['admin', 'trainer', 'trainee'] },
-  { label: 'Attendance', route: '/attendance', icon: TimeIcon, roles: ['trainee'] },
+  { label: 'Attendance', route: '/attendance', icon: TimeIcon, roles: ['admin', 'trainer', 'trainee'] },
   { label: 'Batches', route: '/batches', icon: CalendarIcon, roles: ['admin', 'trainer'] },
   { label: 'Trainees', route: '/trainees', icon: GroupIcon, roles: ['admin', 'trainer'] },
   { label: 'Curriculum', route: '/curriculum', icon: TaskIcon, roles: ['admin', 'trainer', 'trainee'] },
   { label: 'My Progress', route: '/my-progress', icon: TaskIcon, roles: ['trainee'] },
-  {label: 'Assignments', route: '/assignments',icon: TaskIcon,roles: ['admin', 'trainer', 'trainee'],},
+  { label: 'Assignments', route: '/assignments', icon: TaskIcon, roles: ['admin', 'trainer', 'trainee'] },
 ];
+
 
 export default function AppSidebar() {
   const pathname = usePathname();
