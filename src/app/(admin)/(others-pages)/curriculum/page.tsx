@@ -53,26 +53,27 @@ export default function CurriculumPage() {
 
           <div className="p-4">
             <div className="space-y-2">
-              {weeks?.map((week: Week) => (
-                <button
-                  key={week.id}
-                  onClick={() => {
-                    setSelectedWeek(week);
-                    setSelectedDay(null);
-                  }}
-                  className={`w-full rounded-lg p-4 text-left transition-colors ${
-                    selectedWeek?.id === week.id
-                      ? 'bg-primary text-white'
-                      : 'bg-gray-2 hover:bg-gray-3 dark:bg-dark-2 dark:hover:bg-dark-3'
-                  }`}
-                >
-                  <div className="font-semibold">Week {week.week_number}</div>
-                  <div className="text-sm opacity-90">{week.title}</div>
-                  <div className="mt-1 text-xs opacity-75">
-                    Month {week.month} • {week.total_hours}h
-                  </div>
-                </button>
-              ))}
+             {weeks?.map((week: Week) => (
+  <button
+    key={week.id}
+    onClick={() => {
+      setSelectedWeek(week);
+      setSelectedDay(null);
+    }}
+    className={`w-full rounded-lg p-4 text-left transition-colors duration-200 
+      ${selectedWeek?.id === week.id ? `bg-green-300 text-black dark:bg-green-800 dark:text-white`
+        : ` bg-white hover:bg-gray-200 dark:bg-black dark:hover:bg-gray-800  text-gray-900 dark:text-gray-100`
+      }
+    `}
+  >
+    <div className="font-semibold">Week {week.week_number}</div>
+    <div className="text-sm opacity-90">{week.title}</div>
+    <div className="mt-1 text-xs opacity-75">
+      Month {week.month} • {week.total_hours}h
+    </div>
+  </button>
+))}
+
             </div>
           </div>
         </div>
@@ -97,20 +98,31 @@ export default function CurriculumPage() {
             ) : (
               <div className="space-y-2">
                 {days?.map((day: Day) => (
-                  <button
-                    key={day.id}
-                    onClick={() => setSelectedDay(day)}
-                    className={`w-full rounded-lg p-4 text-left transition-colors ${
-                      selectedDay?.id === day.id
-                        ? 'bg-primary text-white'
-                        : 'bg-gray-2 hover:bg-gray-3 dark:bg-dark-2 dark:hover:bg-dark-3'
-                    }`}
-                  >
-                    <div className="font-semibold">Day {day.day_number}</div>
-                    <div className="text-sm opacity-90">{day.title}</div>
-                    <div className="mt-1 text-xs opacity-75">{day.hours}h</div>
-                  </button>
-                ))}
+  <button
+    key={day.id}
+    onClick={() => setSelectedDay(day)}
+    className={`
+      w-full rounded-lg p-4 text-left transition-colors duration-200
+
+      ${selectedDay?.id === day.id
+        ? `
+            bg-green-200 text-black
+            dark:bg-green-800 dark:text-white
+          `
+        : `
+            bg-white/80 hover:bg-gray-200 
+            dark:bg-black dark:hover:bg-gray-800 
+            text-gray-900 dark:text-gray-100
+          `
+      }
+    `}
+  >
+    <div className="font-semibold">Day {day.day_number}</div>
+    <div className="text-sm opacity-90">{day.title}</div>
+    <div className="mt-1 text-xs opacity-75">{day.hours}h</div>
+  </button>
+))}
+
               </div>
             )}
           </div>
@@ -143,17 +155,17 @@ export default function CurriculumPage() {
                   {topic.title}
                 </h4>
                 {topic.description && (
-                  <p className="mt-2 text-sm text-dark-5 dark:text-dark-6">
+                  <p className="mt-2 text-sm text-dark-5 dark:text-white">
                     {topic.description}
                   </p>
                 )}
 
                 {topic.learning_objectives && topic.learning_objectives.length > 0 && (
                   <div className="mt-3">
-                    <p className="text-xs font-medium text-dark-5 dark:text-dark-6">
+                    <p className="text-xs font-medium text-dark-5 dark:text-white">
                       Learning Objectives:
                     </p>
-                    <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-dark-5 dark:text-dark-6">
+                    <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-dark-5 dark:text-white">
                       {topic.learning_objectives.map((obj, idx) => (
                         <li key={idx}>{obj}</li>
                       ))}
@@ -163,7 +175,7 @@ export default function CurriculumPage() {
 
                 {topic.resources && topic.resources.length > 0 && (
                   <div className="mt-3">
-                    <p className="text-xs font-medium text-dark-5 dark:text-dark-6">
+                    <p className="text-xs font-medium text-dark-5 dark:text-white">
                       Resources:
                     </p>
                     <div className="mt-1 space-y-1">
@@ -173,7 +185,7 @@ export default function CurriculumPage() {
                           href={resource}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block text-sm text-primary hover:underline"
+                          className="block text-sm text-blue-500  hover:underline"
                         >
                           {resource}
                         </a>
@@ -183,7 +195,7 @@ export default function CurriculumPage() {
                   </div>
                 )}
 
-                <div className="mt-3 text-xs text-dark-5 dark:text-dark-6">
+                <div className="mt-3 text-xs text-dark-5 dark:text-white text-black">
                   Duration: {topic.duration_minutes} minutes
                 </div>
               </div>
