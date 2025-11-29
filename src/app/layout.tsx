@@ -4,7 +4,7 @@ import './globals.css';
 import QueryProvider from "@/components/Providers/QueryProvider";
 import { SidebarProvider } from '@/context/SidebarContext';
 import { ThemeProvider } from '@/context/ThemeContext';
-
+import { Toaster } from 'react-hot-toast';
 const outfit = Outfit({
   subsets: ["latin"],
 });
@@ -25,6 +25,7 @@ export default function RootLayout({
         </ThemeProvider> */}
       <QueryProvider>
           {children}
+          <Toaster position="top-right" />
         </QueryProvider>
       </body>
     </html>
