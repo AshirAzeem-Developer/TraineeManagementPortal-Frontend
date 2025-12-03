@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import assignmentService from '@/lib/api/assignment.service';
 import { toast } from 'react-hot-toast';
+import curriculumService from '@/lib/api/curriculum.service';
+import batchService from '@/lib/api/batch.service';
 
 export default function CreateAssignmentPage() {
   const router = useRouter();
@@ -44,10 +46,10 @@ export default function CreateAssignmentPage() {
 
   const loadInitialData = async () => {
     try {
-      // Load weeks and batches from your curriculum/batch services
-      // For now, using placeholder - replace with actual API calls
-      setWeeks([]);
-      setBatches([]);
+     const weeksData = await curriculumService.getWeeks();
+    const batchesData = await batchService.getAllBatches();
+     setWeeks(weeksData);
+    setBatches(batchesData);
     } catch (error) {
       console.error('Failed to load data:', error);
     }
@@ -55,9 +57,8 @@ export default function CreateAssignmentPage() {
 
   const loadDays = async (weekId: number) => {
     try {
-      // Load days for selected week
-      // Replace with actual API call
-      setDays([]);
+      const daysData = await curriculumService.getDays(weekId);
+    setDays(daysData);
     } catch (error) {
       console.error('Failed to load days:', error);
     }
