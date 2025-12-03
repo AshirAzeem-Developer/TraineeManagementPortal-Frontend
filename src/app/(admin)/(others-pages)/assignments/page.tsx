@@ -34,6 +34,7 @@ export default function AssignmentsPage() {
         : await assignmentService.getAssignments();
       
       setAssignments(Array.isArray(data) ? data : data.data || []);
+      console.log(data);
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to load assignments');
     } finally {
