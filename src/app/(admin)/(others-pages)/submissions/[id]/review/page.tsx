@@ -47,7 +47,7 @@ export default function SubmissionReviewPage() {
       } else if (submissionData.assignment) {
         setGradeData(prev => ({
           ...prev,
-          score: Math.round(submissionData.assignment!.max_score * 0.7), // Default to 70%
+          score: Math.round(submissionData.assignment!.max_score * 0),
         }));
       }
     } catch (error: any) {
