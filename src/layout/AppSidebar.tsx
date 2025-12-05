@@ -13,6 +13,7 @@ import TaskIcon from '@/icons/task.svg';
 import CloseIcon from '@/icons/close.svg';
 import UserIcon from '@/icons/user-line.svg';
 import TimeIcon from '@/icons/time.svg';
+import PieChartIcon from '@/icons/pie-chart.svg';
 
 interface MenuItem {
   label: string;
@@ -30,6 +31,7 @@ const menuItems: MenuItem[] = [
   { label: 'Curriculum', route: '/curriculum', icon: TaskIcon, roles: ['admin', 'trainer', 'trainee'] },
   { label: 'My Progress', route: '/my-progress', icon: TaskIcon, roles: ['trainee'] },
   { label: 'Assignments', route: '/assignments', icon: TaskIcon, roles: ['admin', 'trainer', 'trainee'] },
+  { label: 'Reports', route: '/reports/weekly', icon: PieChartIcon, roles: ['admin', 'trainer'] },
 ];
 
 
