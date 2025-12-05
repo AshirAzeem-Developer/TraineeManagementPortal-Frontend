@@ -64,6 +64,7 @@ export default function WeeklyReportPage() {
       const data = await reportService.getWeeklyReport(traineeId, weekId);
       console.log('Fetched report data:', data);
       setReportData(data);
+      // console.log('Report Data:', data);
 
     } catch (error) {
       console.error('Failed to fetch report', error);
@@ -73,6 +74,7 @@ export default function WeeklyReportPage() {
     }
   };
 
+ 
   const handleDownloadPdf = async () => {
     if (!selectedTraineeId || !selectedWeek) return;
     setDownloading(true);
@@ -159,7 +161,7 @@ export default function WeeklyReportPage() {
             />
             <ReportSummaryCard
               title="Attendance"
-              value={`${reportData.attendance.present} Days`}
+              value={`${reportData.attendance.present+reportData.attendance.late} Days`}
               subtitle={`${reportData.attendance.absent} Absent, ${reportData.attendance.late} Late`}
               color="blue"
               icon={
@@ -170,7 +172,7 @@ export default function WeeklyReportPage() {
             />
             <ReportSummaryCard
               title="Assignments"
-              value={`${reportData.assignments.completed}/${reportData.assignments.total_assignments}`}
+              value={`${reportData.assignments.details.length}/${reportData.assignments.total_assignments}`}
               subtitle={`Avg Score: ${reportData.assignments.average_score}%`}
               color="green"
               icon={
@@ -200,7 +202,7 @@ export default function WeeklyReportPage() {
                 </div>
                 <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5">
                   <div className="flex items-center gap-3 p-2.5 xl:p-5"><p className="text-black dark:text-white">Present</p></div>
-                  <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-meta-3">{reportData.attendance.present}</p></div>
+                  <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-meta-3">{reportData.attendance.present+reportData.attendance.late}</p></div>
                 </div>
                 <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5">
                   <div className="flex items-center gap-3 p-2.5 xl:p-5"><p className="text-black dark:text-white">Absent</p></div>
