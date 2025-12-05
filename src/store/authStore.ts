@@ -6,6 +6,7 @@ interface AuthState {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  isCheckingAuth: boolean;
   
   setUser: (user: User | null) => void;
   login: (email: string, password: string) => Promise<void>;
@@ -20,6 +21,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isLoading: false,
       isAuthenticated: false,
+      isCheckingAuth: true,
 
       setUser: (user) => set({ user, isAuthenticated: !!user }),
 
@@ -59,22 +61,23 @@ export const useAuthStore = create<AuthState>()(
       },
 
       checkAuth: async () => {
+        set({ isCheckingAuth: true });
         if (!authService.isAuthenticated()) {
-          set({ user: null, isAuthenticated: false });
+          set({ user: null, isAuthenticated: false, isCheckingAuth: false });
           return;
         }
 
         try {
           const user = await authService.getCurrentUser();
-          set({ user, isAuthenticated: true });
+          set({ user, isAuthenticated: true, isCheckingAuth: false });
         } catch (error) {
-          set({ user: null, isAuthenticated: false });
+          set({ user: null, isAuthenticated: false, isCheckingAuth: false });
         }
       },
     }),
     {
       name: 'auth-storage',
-      partialize: (state) => ({ user: state.user }),
+      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated }),
     }
   )
 );
