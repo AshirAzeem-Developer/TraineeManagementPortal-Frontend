@@ -1,4 +1,5 @@
 'use client';
+import { Select, SelectItem } from "@heroui/react";
 
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '@/store/authStore';
@@ -8,9 +9,24 @@ import ReportSummaryCard from '@/components/reports/ReportSummaryCard';
 import AIInsightsPanel from '@/components/reports/AIInsightsPanel';
 import toast from 'react-hot-toast';
 
+const MONTHS = [
+  { id: '1', name: 'January' },
+  { id: '2', name: 'February' },
+  { id: '3', name: 'March' },
+  { id: '4', name: 'April' },
+  { id: '5', name: 'May' },
+  { id: '6', name: 'June' },
+  { id: '7', name: 'July' },
+  { id: '8', name: 'August' },
+  { id: '9', name: 'September' },
+  { id: '10', name: 'October' },
+  { id: '11', name: 'November' },
+  { id: '12', name: 'December' },
+];
+
 export default function MonthlyReportPage() {
   const { user } = useAuthStore();
-  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
+  const [selectedMonth, setSelectedMonth] = useState<string>('');
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
   const [trainees, setTrainees] = useState<Trainee[]>([]);
   const [selectedTraineeId, setSelectedTraineeId] = useState<string>('');
@@ -18,22 +34,10 @@ export default function MonthlyReportPage() {
   const [loading, setLoading] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
-  const months = [
-    { value: 1, label: 'January' },
-    { value: 2, label: 'February' },
-    { value: 3, label: 'March' },
-    { value: 4, label: 'April' },
-    { value: 5, label: 'May' },
-    { value: 6, label: 'June' },
-    { value: 7, label: 'July' },
-    { value: 8, label: 'August' },
-    { value: 9, label: 'September' },
-    { value: 10, label: 'October' },
-    { value: 11, label: 'November' },
-    { value: 12, label: 'December' },
-  ];
-
   useEffect(() => {
+    // Default to current month
+    setSelectedMonth((new Date().getMonth() + 1).toString());
+
     if (user && (user.role === 'admin' || user.role === 'trainer')) {
       fetchTrainees();
     } else if (user && user.role === 'trainee') {
@@ -42,10 +46,10 @@ export default function MonthlyReportPage() {
   }, [user]);
 
   useEffect(() => {
-    if (selectedTraineeId) {
-      fetchReport(parseInt(selectedTraineeId));
+    if (selectedMonth && selectedTraineeId) {
+      fetchReport(parseInt(selectedMonth), parseInt(selectedTraineeId));
     }
-  }, [selectedMonth, selectedYear, selectedTraineeId]);
+  }, [selectedMonth, selectedTraineeId, selectedYear]);
 
   const fetchTrainees = async () => {
     try {
@@ -57,28 +61,30 @@ export default function MonthlyReportPage() {
     }
   };
 
-  const fetchReport = async (traineeId: number) => {
+  const fetchReport = async (monthId: number, traineeId: number) => {
     setLoading(true);
     try {
-      const data = await reportService.getMonthlyReport(traineeId, selectedMonth, selectedYear);
+      const data = await reportService.getMonthlyReport(traineeId, monthId, selectedYear);
+      console.log('Fetched monthly report data:', data);
       setReportData(data);
     } catch (error) {
       console.error('Failed to fetch report', error);
-      // toast.error('Failed to load report data');
+      toast.error('Failed to load report data');
+      setReportData(null);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDownloadPdf = async () => {
-    if (!selectedTraineeId) return;
+    if (!selectedTraineeId || !selectedMonth) return;
     setDownloading(true);
     try {
-      const blob = await reportService.downloadMonthlyPdf(parseInt(selectedTraineeId), selectedMonth, selectedYear);
+      const blob = await reportService.downloadMonthlyPdf(parseInt(selectedTraineeId), parseInt(selectedMonth), selectedYear);
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `Monthly_Report_${months[selectedMonth - 1].label}_${selectedYear}.pdf`);
+      link.setAttribute('download', `Monthly_Report_${MONTHS.find(m => m.id == selectedMonth)?.name}_${selectedYear}.pdf`);
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -93,51 +99,78 @@ export default function MonthlyReportPage() {
   return (
     <div className="mx-auto max-w-7xl">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-          Monthly Performance Report
-        </h2>
+        <div className="flex flex-col gap-2">
+          <h2 className="text-black text-3xl font-bold tracking-tight text-gray-900 dark:text-white mt-2">
+            Monthly Performance Report
+          </h2>
+          <p className="text-black dark:text-white">
+            See monthly performance report of trainees.
+          </p>
+        </div>
         
-        <div className="flex gap-3">
-          <select
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-            className="rounded border border-stroke bg-transparent px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
-          >
-            {months.map((month) => (
-              <option key={month.value} value={month.value}>
-                {month.label}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-            className="rounded border border-stroke bg-transparent px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
-          >
-            <option value={2024}>2024</option>
-            <option value={2025}>2025</option>
-          </select>
+        <div className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">
+              Select Month
+            </label>
+            <Select
+              className="w-48"
+              placeholder="Choose a month"
+              selectedKeys={selectedMonth ? [selectedMonth] : []}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              startContent={
+                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              }
+              classNames={{
+                popoverContent: "bg-white dark:bg-gray-800",
+                trigger: "bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-[#24a556] focus:border-[#24a556]",
+                selectorIcon: "right-3"
+              }}
+            >
+              {MONTHS.map((month) => (
+                <SelectItem key={month.id}>
+                  {month.name}
+                </SelectItem>
+              ))}
+            </Select>
+          </div>
 
           {(user?.role === 'admin' || user?.role === 'trainer') && (
-            <select
-              value={selectedTraineeId}
-              onChange={(e) => setSelectedTraineeId(e.target.value)}
-              className="rounded border border-stroke bg-transparent px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
-            >
-              <option value="">Select Trainee</option>
-              {trainees.map((trainee) => (
-                <option key={trainee.id} value={trainee.id}>
-                  {trainee.name}
-                </option>
-              ))}
-            </select>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                Select Trainee
+              </label>
+              <Select
+                className="w-48"
+                placeholder="Choose a trainee"
+                selectedKeys={selectedTraineeId ? [selectedTraineeId] : []}
+                onChange={(e) => setSelectedTraineeId(e.target.value)}
+                startContent={
+                  <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                }
+                classNames={{
+                  popoverContent: "bg-white dark:bg-gray-800",
+                  trigger: "bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-[#24a556] focus:border-[#24a556]",
+                  selectorIcon: "right-3"
+                }}
+              >
+                {trainees.map((trainee) => (
+                  <SelectItem key={trainee.id}>
+                    {trainee.name}
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
           )}
 
           <button
             onClick={handleDownloadPdf}
             disabled={!reportData || downloading}
-            className="bg-green-500 text-white inline-flex items-center justify-center gap-2.5 rounded px-6 py-2.5 text-center font-medium hover:bg-opacity-90 disabled:opacity-50"
+            className="bg-[#24a556] hover:bg-[#1d8a47] text-white inline-flex items-center justify-center gap-2.5 rounded-lg px-6 py-2.5 text-center font-medium shadow-lg shadow-[#24a556]/30 disabled:opacity-50 disabled:cursor-not-allowed h-10"
           >
             {downloading ? 'Downloading...' : 'Download PDF'}
           </button>
@@ -164,8 +197,8 @@ export default function MonthlyReportPage() {
             />
             <ReportSummaryCard
               title="Attendance"
-              value={`${reportData.attendance.present} Days`}
-              subtitle={`${reportData.attendance.absent} Absent, ${reportData.attendance.late} Late`}
+              value={`${(reportData.attendance?.present || 0) + (reportData.attendance?.late || 0)} Days`}
+              subtitle={`${reportData.attendance?.absent || 0} Absent, ${reportData.attendance?.late || 0} Late`}
               color="blue"
               icon={
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6">
@@ -175,8 +208,8 @@ export default function MonthlyReportPage() {
             />
             <ReportSummaryCard
               title="Assignments"
-              value={`${reportData.assignments.completed}/${reportData.assignments.total_assignments}`}
-              subtitle={`Avg Score: ${reportData.assignments.average_score}%`}
+              value={`${reportData.assignments?.details?.length || 0}/${reportData.assignments?.total_assignments || 0}`}
+              subtitle={`Avg Score: ${reportData.assignments?.average_score || 0}%`}
               color="green"
               icon={
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-6 w-6">
@@ -204,20 +237,16 @@ export default function MonthlyReportPage() {
                   <div className="p-2.5 text-center xl:p-5"><h5 className="text-sm font-medium uppercase xsm:text-base">Value</h5></div>
                 </div>
                 <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5">
-                  <div className="flex items-center gap-3 p-2.5 xl:p-5"><p className="text-black dark:text-white">Total Days</p></div>
-                  <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-black dark:text-white">{reportData.attendance.total_days}</p></div>
-                </div>
-                <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5">
                   <div className="flex items-center gap-3 p-2.5 xl:p-5"><p className="text-black dark:text-white">Present</p></div>
-                  <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-meta-3">{reportData.attendance.present}</p></div>
+                  <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-meta-3">{(reportData.attendance?.present || 0) + (reportData.attendance?.late || 0)}</p></div>
                 </div>
                 <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5">
                   <div className="flex items-center gap-3 p-2.5 xl:p-5"><p className="text-black dark:text-white">Absent</p></div>
-                  <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-meta-1">{reportData.attendance.absent}</p></div>
+                  <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-meta-1">{reportData.attendance?.absent || 0}</p></div>
                 </div>
                 <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5">
                   <div className="flex items-center gap-3 p-2.5 xl:p-5"><p className="text-black dark:text-white">Late</p></div>
-                  <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-meta-6">{reportData.attendance.late}</p></div>
+                  <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-meta-6">{reportData.attendance?.late || 0}</p></div>
                 </div>
               </div>
             </div>
@@ -225,25 +254,27 @@ export default function MonthlyReportPage() {
             {/* Assignments Table */}
             <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
               <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-                Assignments Overview
+                Assignment Details
               </h4>
-               <div className="flex flex-col">
-                <div className="grid grid-cols-2 rounded-sm bg-gray-2 dark:bg-meta-4">
-                  <div className="p-2.5 xl:p-5"><h5 className="text-sm font-medium uppercase xsm:text-base">Metric</h5></div>
-                  <div className="p-2.5 text-center xl:p-5"><h5 className="text-sm font-medium uppercase xsm:text-base">Value</h5></div>
+              <div className="flex flex-col">
+                <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4">
+                  <div className="p-2.5 xl:p-5"><h5 className="text-sm font-medium uppercase xsm:text-base">Assignment</h5></div>
+                  <div className="p-2.5 text-center xl:p-5"><h5 className="text-sm font-medium uppercase xsm:text-base">Status</h5></div>
+                  <div className="p-2.5 text-center xl:p-5"><h5 className="text-sm font-medium uppercase xsm:text-base">Score</h5></div>
                 </div>
-                <div className="grid grid-cols-2 border-b border-stroke dark:border-strokedark">
-                    <div className="flex items-center gap-3 p-2.5 xl:p-5"><p className="text-black dark:text-white">Total Assignments</p></div>
-                    <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-black dark:text-white">{reportData.assignments.total_assignments}</p></div>
-                </div>
-                <div className="grid grid-cols-2 border-b border-stroke dark:border-strokedark">
-                    <div className="flex items-center gap-3 p-2.5 xl:p-5"><p className="text-black dark:text-white">Completed</p></div>
-                    <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-meta-3">{reportData.assignments.completed}</p></div>
-                </div>
-                <div className="grid grid-cols-2 border-b border-stroke dark:border-strokedark">
-                    <div className="flex items-center gap-3 p-2.5 xl:p-5"><p className="text-black dark:text-white">Average Score</p></div>
-                    <div className="flex items-center justify-center p-2.5 xl:p-5"><p className="text-meta-5">{reportData.assignments.average_score}%</p></div>
-                </div>
+                {reportData.assignments?.details?.map((assignment: any, key: number) => (
+                  <div className={`grid grid-cols-3 ${key === reportData.assignments.details.length - 1 ? '' : 'border-b border-stroke dark:border-strokedark'}`} key={key}>
+                    <div className="flex items-center gap-3 p-2.5 xl:p-5">
+                      <p className="text-black dark:text-white">{assignment.assignment_title}</p>
+                    </div>
+                    <div className="flex items-center justify-center p-2.5 xl:p-5">
+                      <p className="text-black dark:text-white capitalize">{assignment.status}</p>
+                    </div>
+                    <div className="flex items-center justify-center p-2.5 xl:p-5">
+                      <p className="text-meta-5">{assignment.score}/{assignment.max_score}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -251,7 +282,7 @@ export default function MonthlyReportPage() {
       ) : (
         <div className="rounded-sm border border-stroke bg-white px-7.5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark">
           <p className="text-center text-gray-500 dark:text-gray-400">
-            Select a month {user?.role !== 'trainee' && 'and a trainee'} to view the report.
+            Please select a month {user?.role !== 'trainee' ? 'and a trainee' : ''} to view the report.
           </p>
         </div>
       )}
