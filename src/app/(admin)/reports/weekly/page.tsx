@@ -1,4 +1,5 @@
 'use client';
+import { Select, SelectItem } from "@heroui/react";
 
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '@/store/authStore';
@@ -108,45 +109,78 @@ export default function WeeklyReportPage() {
         </p>
         </div>
         
-        <div className="flex gap-3">
-          <select
-            value={selectedWeek}
-            onChange={(e) => setSelectedWeek(e.target.value)}
-            className=" text-black dark:text-white rounded border border-stroke bg-transparent px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
-          >
-            <option value="">Select Week</option>
-            {weeks.map((week) => (
-              <option key={week.id} value={week.id}>
-                Week {week.week_number}
-              </option>
-            ))}
-          </select>
+         <div className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">
+              Select Week
+            </label>
+            <Select
+              className="w-48"
+              placeholder="Choose a week"
+              selectedKeys={selectedWeek ? [selectedWeek] : []}
+              onChange={(e) => setSelectedWeek(e.target.value)}
+              startContent={
+                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              }
+              classNames={{
+                popoverContent:"bg-white",
+                trigger: "bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-[#24a556] focus:border-[#24a556]",
+                selectorIcon: "right-3"
+              }}
+            >
+              {weeks.map((week) => (
+                <SelectItem key={week.id}>
+                  {`Week ${week.week_number}`}
+                </SelectItem>
+              ))}
+            </Select>
+          </div>
 
           {(user?.role === 'admin' || user?.role === 'trainer') && (
-            <select
-              value={selectedTraineeId}
-              onChange={(e) => setSelectedTraineeId(e.target.value)}
-              className=" text-black dark:text-white rounded border border-stroke bg-transparent px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
-            >
-              <option value="">Select Trainee</option>
-              {trainees.map((trainee) => (
-                <option key={trainee.id} value={trainee.id}>
-                  {trainee.name}
-                </option>
-              ))}
-            </select>
+            <div className="flex flex-col gap-1.5 ">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                Select Trainee
+              </label>
+              <Select
+              
+                className="w-48"
+                placeholder="Choose a trainee"
+                selectedKeys={selectedTraineeId ? [selectedTraineeId] : []}
+                onChange={(e) => setSelectedTraineeId(e.target.value)}
+                 startContent={
+                  <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                }         
+                classNames={{
+                  popoverContent:"bg-white",
+                  trigger: "bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-[#24a556] focus:border-[#24a556]",
+                  selectorIcon: "right-3",
+                  base:"bg-white"
+                }}
+              >
+                {trainees.map((trainee) => (
+                  <SelectItem key={trainee.id}>
+                    {trainee.name}
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
           )}
-
+          
           <button
             onClick={handleDownloadPdf}
             disabled={!reportData || downloading}
-            className="bg-green-500 text-white inline-flex items-center justify-center gap-2.5 rounded px-6 py-2.5 text-center font-medium hover:bg-opacity-90 disabled:opacity-50"
+            className="bg-[#24a556] hover:bg-[#1d8a47] text-white inline-flex items-center justify-center gap-2.5 rounded-lg px-6 py-2.5 text-center font-medium shadow-lg shadow-[#24a556]/30 disabled:opacity-50 disabled:cursor-not-allowed h-10"
           >
             {downloading ? 'Downloading...' : 'Download PDF'}
           </button>
         </div>
-      </div>
+    
 
+    </div>
       {loading ? (
         <div className="flex h-64 items-center justify-center">
           <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
@@ -252,7 +286,7 @@ export default function WeeklyReportPage() {
       ) : (
         <div className="rounded-sm border border-stroke bg-white px-7.5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark">
           <p className="text-center text-gray-500 dark:text-gray-400">
-            Please select a week {user?.role !== 'trainee' && 'and a trainee'} to view the report.
+            Please select a week {user?.role !== 'trainee' ? 'and a trainee' : ''} to view the report.
           </p>
         </div>
       )}
