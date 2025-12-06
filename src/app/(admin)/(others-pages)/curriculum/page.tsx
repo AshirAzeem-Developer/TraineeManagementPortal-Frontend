@@ -40,7 +40,7 @@ export default function CurriculumPage() {
 
   return (
     <>
-      <PageBreadCrumb pageTitle="Curriculum" />
+      <PageBreadCrumb pageTitle="Curriculum" pageDescription="See curriculum, weeks, days, and topics." />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Weeks List */}

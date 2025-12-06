@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/authStore';
 import assignmentService from '@/lib/api/assignment.service';
 import { Assignment } from '@/types';
 import { toast } from 'react-hot-toast';
+import PageBreadcrumb from '@/components/common/PageBreadCrumb';
 
 export default function AssignmentsPage() {
   const router = useRouter();

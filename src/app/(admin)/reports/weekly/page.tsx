@@ -98,15 +98,21 @@ export default function WeeklyReportPage() {
   return (
     <div className="mx-auto max-w-7xl">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-title-md2 font-semibold text-black dark:text-white">
+        <div className="flex flex-col gap-2"  >
+
+        <h2 className="text-black text-3xl font-bold tracking-tight text-gray-900 dark:text-white mt-2">
           Weekly Performance Report
         </h2>
+        <p className="text-black dark:text-white">
+          See weekly performance report of trainees.
+        </p>
+        </div>
         
         <div className="flex gap-3">
           <select
             value={selectedWeek}
             onChange={(e) => setSelectedWeek(e.target.value)}
-            className="rounded border border-stroke bg-transparent px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
+            className=" text-black dark:text-white rounded border border-stroke bg-transparent px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
           >
             <option value="">Select Week</option>
             {weeks.map((week) => (
@@ -120,7 +126,7 @@ export default function WeeklyReportPage() {
             <select
               value={selectedTraineeId}
               onChange={(e) => setSelectedTraineeId(e.target.value)}
-              className="rounded border border-stroke bg-transparent px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
+              className=" text-black dark:text-white rounded border border-stroke bg-transparent px-5 py-2.5 outline-none focus:border-primary dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
             >
               <option value="">Select Trainee</option>
               {trainees.map((trainee) => (

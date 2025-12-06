@@ -190,11 +190,8 @@ const TraineesPage = () => {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-           <Breadcrumb pageTitle="Trainees" />
-           <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white mt-2">Trainees</h1>
-           <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-             Manage trainees, their profiles, and batch assignments.
-           </p>
+           <Breadcrumb pageTitle="Trainees" pageDescription="Manage trainees, their profiles, and batch assignments." />
+           
         </div>
         <Button 
           size="lg"
