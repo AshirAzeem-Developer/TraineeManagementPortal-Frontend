@@ -1,7 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
-import { dashboardService, DashboardStats } from '@/lib/api/dashboard.service';
+import { dashboardService, DashboardStats, ChartData } from '@/lib/api/dashboard.service';
+import StatsGrid from '@/components/dashboard/StatsGrid';
+import WeeklyProgressChart from '@/components/dashboard/WeeklyProgressChart';
+import SubmissionChart from '@/components/dashboard/SubmissionChart';
+import TraineeStatusChart from '@/components/dashboard/TraineeStatusChart';
+import ActivityFeed from '@/components/dashboard/ActivityFeed';
+import QuickActions from '@/components/dashboard/QuickActions';
 
 export default function DashboardPage() {
   const { user } = useAuthStore();
@@ -11,69 +17,63 @@ export default function DashboardPage() {
     weeks_completed: 0,
     projects_submitted: 0,
   });
+  const [chartData, setChartData] = useState<ChartData>({
+    weeklyProgress: [],
+    submissionStats: [],
+    traineeStatus: [],
+    recentActivity: []
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchDashboardData = async () => {
       try {
-        const data = await dashboardService.getStats();
-        setStats(data);
+        const [statsData, chartsData] = await Promise.all([
+          dashboardService.getStats(),
+          dashboardService.getChartData()
+        ]);
+        setStats(statsData);
+        setChartData(chartsData);
       } catch (error) {
-        console.error('Failed to fetch dashboard stats:', error);
+        console.error('Failed to fetch dashboard data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStats();
+    fetchDashboardData();
   }, []);
 
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-dark dark:text-white">
+        <h1 className="text-3xl font-bold text-black dark:text-white">
           Welcome back, {user?.name}!
         </h1>
-        <p className="text-dark-5 dark:text-dark-6 mt-2">
-          You are logged in as <span className="capitalize font-medium">{user?.role}</span>
+        <p className="text-gray-500 dark:text-gray-400 mt-2">
+          Here's an overview of your training program performance.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <div className="rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-dark-3 dark:bg-gray-dark">
-          <h3 className="text-lg font-semibold text-dark dark:text-white">
-            Total Batches
-          </h3>
-          <p className="mt-2 text-3xl font-bold text-primary">
-            {loading ? '...' : stats.total_batches}
-          </p>
+      <div className="flex flex-col gap-6">
+        {/* Stats Grid */}
+        <StatsGrid stats={stats} loading={loading} />
+
+        {/* Charts Row 1 */}
+        <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+          <WeeklyProgressChart data={chartData.weeklyProgress} />
+          <TraineeStatusChart data={chartData.traineeStatus} />
         </div>
 
-        <div className="rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-dark-3 dark:bg-gray-dark">
-          <h3 className="text-lg font-semibold text-dark dark:text-white">
-            Active Trainees
-          </h3>
-          <p className="mt-2 text-3xl font-bold text-primary">
-            {loading ? '...' : stats.active_trainees}
-          </p>
+        {/* Charts Row 2 */}
+        <div className="grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">
+          <SubmissionChart data={chartData.submissionStats} />
+          <ActivityFeed activities={chartData.recentActivity} />
         </div>
 
-        <div className="rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-dark-3 dark:bg-gray-dark">
-          <h3 className="text-lg font-semibold text-dark dark:text-white">
-            Weeks Completed
-          </h3>
-          <p className="mt-2 text-3xl font-bold text-primary">
-            {loading ? '...' : stats.weeks_completed}
-          </p>
-        </div>
-
-        <div className="rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-dark-3 dark:bg-gray-dark">
-          <h3 className="text-lg font-semibold text-dark dark:text-white">
-            Projects Submitted
-          </h3>
-          <p className="mt-2 text-3xl font-bold text-primary">
-            {loading ? '...' : stats.projects_submitted}
-          </p>
+        {/* Quick Actions */}
+        <div className="grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">
+           <QuickActions />
         </div>
       </div>
     </div>
