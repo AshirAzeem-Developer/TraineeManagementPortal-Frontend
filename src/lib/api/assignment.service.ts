@@ -5,7 +5,7 @@ interface AssignmentFilters {
   week_id?: number;
   day_id?: number;
   batch_id?: number;
-  type?: 'mini_task' | 'project' | 'quiz' | 'reading';
+  type?: 'mini_task' | 'project' | 'quiz' | 'reading' | 'capstone';
   difficulty?: 'beginner' | 'intermediate' | 'advanced';
   status?: 'published' | 'draft';
   page?: number;

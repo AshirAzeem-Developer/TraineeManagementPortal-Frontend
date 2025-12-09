@@ -15,7 +15,7 @@ export default function CreateAssignmentPage() {
   const [batches, setBatches] = useState<any[]>([]);
 
 
-  type AssignmentType = "mini_task" | "project" | "quiz" | "reading";
+  type AssignmentType = "mini_task" | "project" | "quiz" | "reading" | "capstone";
   type Difficulty = "beginner" | "intermediate" | "advanced";
   
   
@@ -25,7 +25,7 @@ export default function CreateAssignmentPage() {
     requirements: [''],
     resources: [''],
     type: "mini_task" as AssignmentType,
-      difficulty: "beginner" as Difficulty, 
+    difficulty: "beginner" as Difficulty, 
     max_score: 100,
     due_date: '',
     week_id: '',
@@ -113,7 +113,7 @@ export default function CreateAssignmentPage() {
       const cleanedData = {
         ...formData,
          type: formData.type as AssignmentType,
-          difficulty: formData.difficulty as Difficulty, 
+        difficulty: formData.difficulty as Difficulty, 
         requirements: formData.requirements.filter(r => r.trim()),
         resources: formData.resources.filter(r => r.trim()),
         week_id: formData.week_id ? Number(formData.week_id) : null,
@@ -188,6 +188,7 @@ export default function CreateAssignmentPage() {
                 <option value="project">Project</option>
                 <option value="quiz">Quiz</option>
                 <option value="reading">Reading</option>
+                <option value="capstone">Capstone</option>
               </select>
             </div>
 

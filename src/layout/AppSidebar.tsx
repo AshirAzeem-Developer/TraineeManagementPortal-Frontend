@@ -43,6 +43,8 @@ const menuItems: MenuItem[] = [
       { label: 'Monthly Report', route: '/reports/monthly', icon: PieChartIcon, roles: ['admin', 'trainer'] },
     ]
   },
+  { label: 'Capstone', route: '/capstone', icon: TaskIcon, roles: ['admin', 'trainer', 'trainee'] },
+  { label: 'Certificate', route: '/certificate', icon: TaskIcon, roles: ['trainee'] },
 ];
 
 

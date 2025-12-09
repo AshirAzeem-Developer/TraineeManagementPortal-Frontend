@@ -116,7 +116,7 @@ export interface Assignment {
   description: string;
   requirements: string[] | null;
   resources: string[] | null;
-  type: 'mini_task' | 'project' | 'quiz' | 'reading';
+  type: 'mini_task' | 'project' | 'quiz' | 'reading' | 'capstone';
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   max_score: number;
   due_date: string | null;
