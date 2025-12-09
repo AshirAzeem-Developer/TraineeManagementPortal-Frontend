@@ -8,6 +8,7 @@ import SubmissionChart from '@/components/dashboard/SubmissionChart';
 import TraineeStatusChart from '@/components/dashboard/TraineeStatusChart';
 import ActivityFeed from '@/components/dashboard/ActivityFeed';
 import QuickActions from '@/components/dashboard/QuickActions';
+import TraineeDashboard from '@/components/dashboard/TraineeDashboard';
 
 export default function DashboardPage() {
   const { user } = useAuthStore();
@@ -26,6 +27,11 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (user?.role === 'trainee') {
+        setLoading(false);
+        return;
+    }
+
     const fetchDashboardData = async () => {
       try {
         const [statsData, chartsData] = await Promise.all([
@@ -42,7 +48,11 @@ export default function DashboardPage() {
     };
 
     fetchDashboardData();
-  }, []);
+  }, [user]);
+
+  if (user?.role === 'trainee') {
+    return <TraineeDashboard />;
+  }
 
   return (
     <div>
