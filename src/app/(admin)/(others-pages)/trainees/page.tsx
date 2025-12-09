@@ -138,7 +138,7 @@ const TraineesPage = () => {
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-             <Tooltip content="View Profile">
+             <Tooltip content="View Profile" className="dark:text-gray-200 bg-blue-600/85 rounded-md" >
               <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                   <Button 
                     isIconOnly 
@@ -151,7 +151,7 @@ const TraineesPage = () => {
                   </Button>
               </span>
             </Tooltip>
-            <Tooltip content="Edit Trainee">
+            <Tooltip content="Edit Trainee" className="dark:text-gray-200 bg-green-600/85 rounded-md">
               <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                  <Button 
                     isIconOnly 
@@ -164,7 +164,7 @@ const TraineesPage = () => {
                   </Button>
               </span>
             </Tooltip>
-            <Tooltip color="danger" content="Delete Trainee">
+            <Tooltip color="danger" content="Delete Trainee" className="dark:text-gray-200 bg-red-600/85   rounded-md">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
                  <Button 
                     isIconOnly 
@@ -208,10 +208,10 @@ const TraineesPage = () => {
       </div>
 
       <div className="w-full">
-        <Table aria-label="Trainees Table" selectionMode="none">
+        <Table aria-label="Trainees Table" selectionMode="none" className="dark:bg-gray-800 rounded-md">
           <TableHeader columns={columns}>
             {(column) => (
-              <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
+              <TableColumn className="dark:text-gray-200" key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
                 {column.name}
               </TableColumn>
             )}
@@ -223,8 +223,8 @@ const TraineesPage = () => {
             emptyContent={"No trainees found"}
           >
             {(item) => (
-              <TableRow key={item.id}>
-                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+              <TableRow className=" dark:text-gray-200" key={item.id}>
+                {(columnKey) => <TableCell className="dark:text-gray-200">{renderCell(item, columnKey)}</TableCell>}
               </TableRow>
             )}
           </TableBody>
