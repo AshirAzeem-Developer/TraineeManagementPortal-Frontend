@@ -211,7 +211,7 @@ export default function SignInForm() {
             required
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="w-full rounded-lg border border-stroke bg-transparent py-3.5 px-5 font-medium text-dark outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-gray-2 dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+            className="w-full rounded-lg border border-stroke bg-transparent py-3.5 px-5 font-medium text-dark outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-gray-2 dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary placeholder-dark/50 dark:placeholder-white/50"
             placeholder="Enter your email"
           />
         </div>

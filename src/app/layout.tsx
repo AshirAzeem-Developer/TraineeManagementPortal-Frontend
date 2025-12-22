@@ -20,16 +20,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.className} dark:bg-gray-900`}>
-        {/* <ThemeProvider>
-          <SidebarProvider>{children}</SidebarProvider>
-        </ThemeProvider> */}
-      <QueryProvider>
-          <HeroUIProviders>
-            {children}
-            <Toaster position="top-right" />
-          </HeroUIProviders>
-        </QueryProvider>
+      <body className={`${outfit.className} bg-gray-50 dark:bg-gray-900`}>
+        <ThemeProvider>
+          <SidebarProvider>
+            <QueryProvider>
+              <HeroUIProviders>
+                {children}
+                <Toaster position="top-right" />
+              </HeroUIProviders>
+            </QueryProvider>
+          </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

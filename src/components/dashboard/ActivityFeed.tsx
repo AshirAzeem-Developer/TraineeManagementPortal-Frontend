@@ -17,7 +17,7 @@ interface ActivityFeedProps {
 
 export default function ActivityFeed({ activities }: ActivityFeedProps) {
   return (
-    <div className="col-span-12 rounded-lg border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
+    <div className="col-span-12 rounded-lg border border-stroke bg-white dark:bg-black/90 px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
       <h3 className="mb-4 text-xl font-semibold text-black dark:text-white">
         Recent Activity
       </h3>
