@@ -89,13 +89,13 @@ export default function AppSidebar() {
       {/* Sidebar */}
       <aside
         className={`fixed left-0 top-0 z-50 flex h-screen w-72 flex-col overflow-y-hidden 
-          bg-white dark:bg-gray-900 
-          border-r border-gray-200 dark:border-gray-700
+          bg-white dark:bg-[#222E3C] 
+          border-r border-gray-200 dark:border-[#2f3d4d]
           duration-300 ease-linear lg:static lg:translate-x-0 
           ${isExpanded ? 'translate-x-0' : '-translate-x-full'}`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between px-6 py-6 border-b border-gray-200 dark:border-[#2f3d4d]">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold text-gray-900 dark:text-white">
               TraineePortal
@@ -134,8 +134,8 @@ export default function AppSidebar() {
                         transition duration-200 ease-in-out
                         ${
                           isActive && !item.children
-                            ? 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white'
-                            : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                            ? 'bg-[#24a556]/10 text-[#24a556] dark:bg-[#24a556] dark:text-white'
+                            : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5'
                         }
                       `}
                     >
@@ -144,7 +144,7 @@ export default function AppSidebar() {
                           className={`w-5 h-5 transition 
                             ${
                               isActive && !item.children
-                                ? 'text-gray-900 dark:text-white'
+                                ? 'text-[#24a556] dark:text-white'
                                 : 'text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
                             }`}
                         />
@@ -172,8 +172,8 @@ export default function AppSidebar() {
                                   transition duration-200 ease-in-out
                                   ${
                                     isChildActive
-                                      ? 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white'
-                                      : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                                      ? 'bg-[#24a556]/10 text-[#24a556] dark:text-[#24a556] dark:hover:bg-white/5'
+                                      : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-white/5'
                                   }
                                 `}
                               >
