@@ -23,9 +23,9 @@ const InputGroup: React.FC<InputGroupProps> = ({
 }) => {
   return (
     <div className={customClasses}>
-      <label className="mb-2.5 block text-black dark:text-white">
+      <label className="mb-2.5 block text-black dark:text-gray-200">
         {label}
-        {required && <span className="text-meta-1">*</span>}
+        {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       <input
         type={type}
@@ -34,7 +34,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
         value={value}
         onChange={onChange}
         required={required}
-        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+        className="w-full rounded border-[1.5px] border-gray-300 bg-transparent py-3 px-5 font-medium outline-none transition focus:border-[#24a556] active:border-[#24a556] disabled:cursor-default disabled:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-[#24a556]"
       />
     </div>
   );

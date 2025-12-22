@@ -15,7 +15,7 @@ interface WeeklyProgressChartProps {
 
 export default function WeeklyProgressChart({ data }: WeeklyProgressChartProps) {
   return (
-    <div className="col-span-12 rounded-lg border border-stroke bg-white dark:bg-black/90 px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
+    <div className="col-span-12 rounded-lg border border-gray-200 bg-white px-5 pt-7.5 pb-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:px-7.5 xl:col-span-8">
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h4 className="text-xl font-semibold text-black dark:text-white">

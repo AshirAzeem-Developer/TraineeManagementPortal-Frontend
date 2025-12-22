@@ -17,7 +17,7 @@ interface ActivityFeedProps {
 
 export default function ActivityFeed({ activities }: ActivityFeedProps) {
   return (
-    <div className="col-span-12 rounded-lg border border-stroke bg-white dark:bg-black/90 px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
+    <div className="col-span-12 rounded-lg border border-gray-200 bg-white px-5 pt-7.5 pb-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 xl:col-span-4">
       <h3 className="mb-4 text-xl font-semibold text-black dark:text-white">
         Recent Activity
       </h3>
@@ -27,9 +27,12 @@ export default function ActivityFeed({ activities }: ActivityFeedProps) {
           return (
             <div key={activity.id} className="flex items-start gap-3">
               <div
-                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${activity.color}`}
+                className={`flex flex-row  h-10 w-10 shrink-0 items-center justify-center rounded-full p-0 ${activity.color}`}
               >
-                <Icon className="h-4 w-4 fill-current" />
+                <div>
+
+                <Icon className=" h-full w-full fill-current self-center" />
+                </div>
               </div>
               <div>
                 <p className="text-sm font-medium text-black dark:text-white">

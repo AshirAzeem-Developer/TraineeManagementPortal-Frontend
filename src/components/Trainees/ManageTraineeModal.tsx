@@ -142,10 +142,10 @@ const ManageTraineeModal: React.FC<ManageTraineeModalProps> = ({
       }}
       isDismissable={!isLoading}
     >
-      <ModalContent className="bg-white dark:bg-boxdark rounded-2xl border border-gray-200 dark:border-gray-700 shadow-2xl">
+      <ModalContent className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-2xl">
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1 text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+            <ModalHeader className="flex flex-col gap-1 text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 px-6 py-4">
               {trainee ? "Edit Trainee" : "Add New Trainee"}
             </ModalHeader>
             <ModalBody className="px-6 py-5">
@@ -196,23 +196,23 @@ const ManageTraineeModal: React.FC<ManageTraineeModalProps> = ({
                     <label className="mb-2.5 block text-black dark:text-white">
                         Batch
                     </label>
-                    <div className="relative z-20 bg-transparent dark:bg-form-input">
+                    <div className="relative z-20 bg-transparent dark:bg-gray-900">
                         <select
                             name="batch_id"
                             value={formData.batch_id || ""}
                             onChange={handleBatchChange}
-                            className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-[#24a556] active:border-[#24a556] dark:border-form-strokedark dark:bg-form-input dark:focus:border-[#24a556]"
+                            className="relative z-20 w-full appearance-none rounded border border-gray-300 dark:border-gray-700 bg-transparent py-3 px-5 outline-none transition focus:border-[#24a556] active:border-[#24a556] dark:bg-gray-900 dark:focus:border-[#24a556] text-black dark:text-white"
                         >
-                            <option value="">Select Batch</option>
+                            <option value="" className="text-gray-500 dark:text-gray-400">Select Batch</option>
                             {batches.map((b) => (
-                                <option key={b.id} value={b.id}>
+                                <option key={b.id} value={b.id} className="dark:bg-gray-900">
                                     {b.name}
                                 </option>
                             ))}
                         </select>
                         <span className="absolute top-1/2 right-4 z-30 -translate-y-1/2">
-                            <svg className="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z" fill=""/>
+                            <svg className="fill-current text-gray-500 dark:text-gray-400" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z" />
                             </svg>
                         </span>
                     </div>
@@ -233,12 +233,12 @@ const ManageTraineeModal: React.FC<ManageTraineeModalProps> = ({
                 </div>
               </form>
             </ModalBody>
-            <ModalFooter className="border-t border-gray-200 dark:border-gray-700 px-6 py-4 gap-3">
+            <ModalFooter className="border-t border-gray-200 dark:border-gray-800 px-6 py-4 gap-3">
               <Button 
                 variant="light" 
                 onPress={onClose}
                 isDisabled={isLoading}
-                className="font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 px-6"
+                className="font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 px-6"
               >
                 Cancel
               </Button>

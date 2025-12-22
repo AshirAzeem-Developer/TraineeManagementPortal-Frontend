@@ -49,9 +49,9 @@ const StatCard: React.FC<StatCardProps> = ({
   const TrendIcon = trend.isPositive ? TrendingUp : TrendingDown;
   
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
+    <div className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
       {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-50/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:to-gray-900/50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-50/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:to-gray-800/50" />
       
       <div className="relative z-10">
         {/* Header with icon and trend */}
@@ -62,8 +62,8 @@ const StatCard: React.FC<StatCardProps> = ({
           
           <div className={`flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${
             trend.isPositive 
-              ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' 
-              : 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400'
+              ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400' 
+              : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'
           }`}>
             <TrendIcon className="h-3 w-3" />
             <span>{trend.value}%</span>
@@ -73,7 +73,7 @@ const StatCard: React.FC<StatCardProps> = ({
         {/* Value and title */}
         <div className="mt-5">
           <div className="flex items-baseline gap-2">
-            <h3 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <h3 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
               {value}
             </h3>
           </div>
@@ -132,7 +132,7 @@ const StatsGrid: React.FC<StatsGridProps> = ({ stats, loading = false }) => {
         {[...Array(4)].map((_, index) => (
           <div
             key={index}
-            className="h-40 animate-pulse rounded-xl border border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-800"
+            className="h-40 animate-pulse rounded-xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-900"
           />
         ))}
       </div>

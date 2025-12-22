@@ -14,7 +14,7 @@ interface SubmissionChartProps {
 
 export default function SubmissionChart({ data }: SubmissionChartProps) {
   return (
-    <div className="col-span-12 rounded-lg border border-stroke bg-white dark:bg-black/90 px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
+    <div className="col-span-12 rounded-lg border border-gray-200 bg-white px-5 pt-7.5 pb-5 shadow-sm dark:border-gray-700 dark:bg-gray-800 xl:col-span-4">
       <h3 className="mb-4 text-xl font-semibold text-black dark:text-white">
         Submissions by Week
       </h3>

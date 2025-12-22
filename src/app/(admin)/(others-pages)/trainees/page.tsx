@@ -208,23 +208,36 @@ const TraineesPage = () => {
       </div>
 
       <div className="w-full">
-        <Table aria-label="Trainees Table" selectionMode="none" className="dark:bg-gray-800 rounded-md">
+        <Table 
+          aria-label="Trainees Table" 
+          selectionMode="none" 
+          className="dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800"
+          classNames={{
+            wrapper: "dark:bg-gray-900 p-0 shadow-none border-none",
+            th: "bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-medium text-xs uppercase tracking-wider",
+            td: "group-hover:bg-gray-50 dark:group-hover:bg-gray-800/50",
+          }}
+        >
           <TableHeader columns={columns}>
             {(column) => (
-              <TableColumn className="dark:text-gray-200" key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
+              <TableColumn 
+                key={column.uid} 
+                align={column.uid === "actions" ? "center" : "start"}
+                className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300"
+              >
                 {column.name}
               </TableColumn>
             )}
           </TableHeader>
           <TableBody 
             items={trainees} 
-            loadingContent={<div>Loading...</div>}
+            loadingContent={<div className="text-gray-500 dark:text-gray-400">Loading...</div>}
             isLoading={loading}
-            emptyContent={"No trainees found"}
+            emptyContent={<div className="text-gray-500 dark:text-gray-400">No trainees found</div>}
           >
             {(item) => (
-              <TableRow className=" dark:text-gray-200" key={item.id}>
-                {(columnKey) => <TableCell className="dark:text-gray-200">{renderCell(item, columnKey)}</TableCell>}
+              <TableRow key={item.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                {(columnKey) => <TableCell className="dark:text-gray-300">{renderCell(item, columnKey)}</TableCell>}
               </TableRow>
             )}
           </TableBody>

@@ -36,10 +36,10 @@ const ViewTraineeModal: React.FC<ViewTraineeModalProps> = ({
       }}
       size="md"
     >
-      <ModalContent className="bg-white dark:bg-boxdark rounded-2xl border border-gray-200 dark:border-gray-700 shadow-2xl">
+      <ModalContent className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-2xl">
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1 text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+            <ModalHeader className="flex flex-col gap-1 text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 px-6 py-4">
               Trainee Profile
             </ModalHeader>
             <ModalBody className="px-6 py-6">
