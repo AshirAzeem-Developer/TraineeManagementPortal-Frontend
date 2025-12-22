@@ -116,7 +116,7 @@ const CapstonePage = () => {
     // For now, let's focus on Trainee view as requested.
     if (user?.role !== 'trainee') {
          return (
-            <div className="mx-auto max-w-270">
+            <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-4 py-8">
                 <PageBreadcrumb pageTitle="Capstone Project" />
                 <div className="p-10 bg-white dark:bg-boxdark rounded-sm border border-stroke shadow-default">
                     <h3 className="text-xl font-semibold mb-2">Capstone Management</h3>
@@ -133,7 +133,7 @@ const CapstonePage = () => {
     const isGraded = submission && submission.status === 'graded';
 
     return (
-        <div className="mx-auto max-w-270">
+        <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-4 py-8">
             <PageBreadcrumb pageTitle="Capstone Project" />
 
             <div className="grid grid-cols-1 gap-9">
